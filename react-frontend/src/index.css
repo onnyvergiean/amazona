@@ -18,6 +18,14 @@ code {
 main {
   flex: 1;
 }
+.btn-primary {
+  background-color: #f0c040 !important;
+  color: black !important;
+  border-color: #f0c040 !important;
+}
+.rating span {
+  color: #ffc107;
+}
 .products {
   display: flex;
   flex-wrap: wrap;
