@@ -1,8 +1,29 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, Button } from 'react-bootstrap';
+import axios from 'axios';
+
 import Rating from '../components/Rating';
+import { Store } from '../Store';
+
 export default function Product({ product }) {
+  const { state, dispatch: contextDispatch } = useContext(Store);
+  const {
+    cart: { cartItems },
+  } = state;
+  const addToCardHandler = async (item) => {
+    const existItem = cartItems.find((i) => i._id === product._id);
+    const quantity = existItem ? existItem.quantity + 1 : 1;
+    const { data } = await axios.get(`/api/product/${item._id}`);
+    if (data.countInStock < quantity) {
+      window.alert("Sorry, we're out of stock");
+      return;
+    }
+    contextDispatch({
+      type: 'ADD_TO_CART',
+      payload: { ...item, quantity },
+    });
+  };
   return (
     <Card>
       <Link to={`/product/${product.slug}`}>
@@ -17,7 +38,13 @@ export default function Product({ product }) {
         </Link>
         <Rating rating={product.rating} numReviews={product.numReviews} />
         <Card.Text>${product.price}</Card.Text>
-        <Button variant="primary">Add to Cart</Button>
+        {product.countInStock === 0 ? (
+          <Button disabled variant="light">
+            Out of Stock
+          </Button>
+        ) : (
+          <Button onClick={() => addToCardHandler(product)}>Add to Cart</Button>
+        )}
       </Card.Body>
     </Card>
   );
