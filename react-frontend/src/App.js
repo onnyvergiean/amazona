@@ -5,6 +5,7 @@ import ProductScreen from './screens/ProductScreen';
 import { Navbar, Container, Nav, Badge } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Store } from './Store';
+import CartScreen from './screens/CartScreen';
 function App() {
   const { state } = useContext(Store);
   const { cart } = state;
@@ -34,6 +35,7 @@ function App() {
           <Container className="mt-3">
             <Routes>
               <Route path="/" element={<HomeScreen />} />
+              <Route path="/cart" element={<CartScreen />} />
               <Route path="/product/:slug" element={<ProductScreen />} />
             </Routes>
           </Container>

@@ -1,5 +1,5 @@
 import React, { useEffect, useReducer, useContext } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Row, Col, ListGroup, Card, Badge, Button } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
@@ -23,6 +23,7 @@ const reducer = (state, action) => {
 
 export default function ProductScreen() {
   const { slug } = useParams();
+  const navigate = useNavigate();
   const [{ product, loading, error }, dispatch] = useReducer(reducer, {
     product: [],
     loading: true,
@@ -55,6 +56,7 @@ export default function ProductScreen() {
       type: 'ADD_TO_CART',
       payload: { ...product, quantity },
     });
+    navigate('/cart');
   };
 
   return loading ? (
