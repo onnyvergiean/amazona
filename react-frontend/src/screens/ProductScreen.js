@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer } from 'react';
+import React, { useEffect, useReducer, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Row, Col, ListGroup, Card, Badge, Button } from 'react-bootstrap';
@@ -7,7 +7,7 @@ import Rating from '../components/Rating';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
 import { getError } from './../util';
-
+import { Store } from '../Store';
 const reducer = (state, action) => {
   switch (action.type) {
     case 'FETCH_REQUEST':
@@ -40,6 +40,14 @@ export default function ProductScreen() {
     };
     fetchData();
   }, [slug]);
+
+  const { state, dispatch: contextDispatch } = useContext(Store);
+  const addToCartHandler = () => {
+    contextDispatch({
+      type: 'ADD_TO_CART',
+      payload: { ...product, quantity: 1 },
+    });
+  };
 
   return loading ? (
     <LoadingBox />
@@ -98,7 +106,7 @@ export default function ProductScreen() {
                 {product.countInStock > 0 && (
                   <ListGroup.Item>
                     <div className="d-grid">
-                      <Button>Add to Card</Button>
+                      <Button onClick={addToCartHandler}>Add to Card</Button>
                     </div>
                   </ListGroup.Item>
                 )}
