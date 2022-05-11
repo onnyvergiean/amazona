@@ -14,7 +14,7 @@ export default function Product({ product }) {
   const addToCardHandler = async (item) => {
     const existItem = cartItems.find((i) => i._id === product._id);
     const quantity = existItem ? existItem.quantity + 1 : 1;
-    const { data } = await axios.get(`/api/product/${item._id}`);
+    const { data } = await axios.get(`/api/products/${item._id}`);
     if (data.countInStock < quantity) {
       window.alert("Sorry, we're out of stock");
       return;
