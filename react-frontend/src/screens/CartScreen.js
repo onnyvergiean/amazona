@@ -67,7 +67,7 @@ export default function CartScreen() {
                     <Col md={3}>
                       <Button
                         variant="light"
-                        disabled={item.quantity === 1}
+                        disabled={item.quantity === 0}
                         onClick={() =>
                           updateCartHandler(item, item.quantity - 1)
                         }
