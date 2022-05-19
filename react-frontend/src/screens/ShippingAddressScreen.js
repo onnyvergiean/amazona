@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { Store } from '../Store';
 import CheckoutSteps from '../components/CheckoutSteps';
 export default function ShippingAddressScreen() {
+  let savedShippingAddresLocal = {};
   const navigate = useNavigate();
   const { state, dispatch: contextDispatch } = useContext(Store);
   const {
@@ -12,19 +13,31 @@ export default function ShippingAddressScreen() {
     cart: { shippingAddress },
   } = state;
 
-  const [fullName, setFullName] = useState(shippingAddress.fullName || '');
-  const [address, setAddress] = useState(shippingAddress.address || '');
-  const [city, setCity] = useState(shippingAddress.city || '');
-  const [postalCode, setPostalCode] = useState(
-    shippingAddress.postalCode || ''
+  if (localStorage.getItem('shippingAddress')) {
+    savedShippingAddresLocal = JSON.parse(
+      localStorage.getItem('shippingAddress')
+    );
+  }
+
+  const [fullName, setFullName] = useState(
+    savedShippingAddresLocal.fullName || ''
   );
-  const [country, setCountry] = useState(shippingAddress.country || '');
+  const [address, setAddress] = useState(
+    savedShippingAddresLocal.address || ''
+  );
+  const [city, setCity] = useState(savedShippingAddresLocal.city || '');
+  const [postalCode, setPostalCode] = useState(
+    savedShippingAddresLocal.postalCode || ''
+  );
+  const [country, setCountry] = useState(
+    savedShippingAddresLocal.country || ''
+  );
 
   useEffect(() => {
     if (!userInfo) {
       navigate('/signin?redirect=/shipping');
     }
-  }, [userInfo, navigate]);
+  }, [userInfo, navigate, shippingAddress]);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -48,6 +61,7 @@ export default function ShippingAddressScreen() {
         country,
       })
     );
+
     navigate('/payment');
   };
   return (

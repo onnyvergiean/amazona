@@ -12,13 +12,14 @@ import CartScreen from './screens/CartScreen';
 import ShippingAddressScreen from './screens/ShippingAddressScreen';
 import SignupScreen from './screens/SignupScreen';
 import PaymentMethodScreen from './screens/PaymentMethodScreen';
+import PlaceOrderScreen from './screens/PlaceOrderScreen';
 function App() {
   const { state, dispatch: contextDispatch } = useContext(Store);
   const { cart, userInfo } = state;
   const signoutHandler = () => {
     contextDispatch({ type: 'USER_SIGNOUT' });
     localStorage.removeItem('userInfo');
-    localStorage.removeItem('shipingAddress');
+    localStorage.removeItem('shippingAddress');
     localStorage.removeItem('paymentMethod');
   };
 
@@ -77,6 +78,7 @@ function App() {
               <Route path="/cart" element={<CartScreen />} />
               <Route path="/shipping" element={<ShippingAddressScreen />} />
               <Route path="/payment" element={<PaymentMethodScreen />} />
+              <Route path="//place-order" element={<PlaceOrderScreen />} />
             </Routes>
           </Container>
         </main>
